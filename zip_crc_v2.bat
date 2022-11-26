@@ -8,12 +8,11 @@ echo THIS SCRIPT NEEDS 7ZIP&pause&exit
 
 title Processing files...
 (echo File,Path,Size,CRC)>output.csv
-"%_7zip%" l -slt -an -ai!*.zip -ai!*.7z >temp.txt
-for /f "tokens=1,2 delims=:=" %%g in ('findstr /lb /c:"Listing archive:" /c:"Path =" /c:"Size =" /c:"CRC =" temp.txt') do call :get_info "%%g" "%%h"
-	
-del temp.txt
+for /f "tokens=1,2 delims=:=" %%g in ('^("%_7zip%" l -slt -an -ai!*.zip -ai!*.7z^)^|findstr /lb /c:"Listing archive:" /c:"Path =" /c:"Size =" /c:"CRC ="') do call :get_info "%%g" "%%h"
+
 title FINISHED
-pause&exit
+echo ALL DONE!!
+timeout 5&exit
 
 :get_info
 if "%~1"=="Listing archive" (

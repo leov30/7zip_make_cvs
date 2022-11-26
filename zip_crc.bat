@@ -16,10 +16,9 @@ if %_total_lines% equ 0 (
 
 title Processing files...
 set /a _count=0&(echo File,Path,Size,CRC)>output.csv
-
 for %%g in (*.zip *.7z) do (
 	echo %%g
-	for /f "tokens=2 skip=1 delims==" %%h in ('""%_7zip%" l -slt -spd -- "%%g"|findstr /lb /c:"Path =" /c:"Size =" /c:"CRC =""') do (
+	for /f "tokens=2 skip=1 delims==" %%h in ('^("%_7zip%" l -slt -spd -- "%%g"^)^|findstr /lb /c:"Path =" /c:"Size =" /c:"CRC ="') do (
 		call :get_info "%%h" "%%g"
 	)
 	call :progress
